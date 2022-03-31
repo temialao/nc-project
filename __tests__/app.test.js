@@ -1,9 +1,9 @@
 const request = require('supertest');
-// const { request } = require('express');
 const testData = require('../db/data/test-data');
 const seed = require('../db/seeds/seed');
 const app = require('../app')
 const db = require('../db/connection');
+
 
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
@@ -27,5 +27,18 @@ describe('GET /api/topics', () => {
                 );
             });
         });
+    });
+});
+
+describe('GET /api/articles/:article_id', () => {
+    test('responds with status: 200 and article object with correct properties', () => {
+        return request(app)
+        .get('/api/articles/5')
+        .expect(200)
+        .then((response) => {
+            const article = response.body;
+            console.log(article)
+            expect(typeof article).toBe('object')
+        })
     });
 });
