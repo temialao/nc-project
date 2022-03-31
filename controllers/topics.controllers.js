@@ -1,4 +1,4 @@
-const { pullTopics, pullArticleById } = require("../models/topics.models");
+const { pullTopics, pullArticleById, updateArticleById } = require("../models/topics.models");
 
 exports.getTopics = (req, res) => {
   pullTopics().then((topics) => {
@@ -12,6 +12,16 @@ exports.getTopics = (req, res) => {
 exports.getArticleById = (req, res) => {
     const id = req.params.article_id;
     pullArticleById(id).then((article) => {
+        res.status(200).send({article})
+    })
+    .catch((err) => {
+        throw new Error(err)
+    });
+};
+
+exports.patchArticleById = (req, res) => {
+    const id = req.params.article_id;
+    updateArticleById(id, req.body).then((article) => {
         res.status(200).send({article})
     })
     .catch((err) => {

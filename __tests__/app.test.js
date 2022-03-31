@@ -5,6 +5,7 @@ const app = require('../app')
 const db = require('../db/connection');
 
 
+
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
@@ -39,6 +40,22 @@ describe('GET /api/articles/:article_id', () => {
             const article = response.body;
             console.log(article)
             expect(typeof article).toBe('object')
+        })
+    });
+});
+
+describe('PATCH /api/article/:article_id', () => {
+    test('responds with status: 200 and updated article object', () => {
+        const articleUpdate = {inc_votes: -3}
+        return request(app)
+        .patch('/api/articles/1')
+        .send(articleUpdate)
+        .expect(200)
+        .then((response) => {
+            const article = response.body;
+            console.log(article);
+            expect(typeof article).toBe('object')
+            expect(article.article[0].votes).toEqual(97)
         })
     });
 });
